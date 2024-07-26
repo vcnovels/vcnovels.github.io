@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>静态小说网站</title>
     <style>
-        /* 基本样式 */
+        /* 基本样式保持不变 */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -68,22 +68,9 @@
         </nav>
     </header>
 
-    <main>
-        <article>
-            <header>
-                <h2>小说标题</h2>
-                <p>作者：作者名</p>
-            </header>
-            <section>
-                <h3>第一章：章节标题</h3>
-                <p>章节内容，可以使用Markdown语法编写。</p>
-                <p>你可以在这里插入段落和其他内容。</p>
-            </section>
-            <section>
-                <h3>第二章：章节标题</h3>
-                <p>第二章内容。</p>
-            </section>
-            <!-- 更多章节可以继续添加 -->
+    <main id="main-content">
+        <article id="novel-content">
+            <!-- 小说内容将通过JavaScript动态加载 -->
         </article>
     </main>
 
@@ -92,11 +79,31 @@
     </footer>
 
     <script>
-        // JavaScript代码示例（这里只是一个简单的示范）
         document.addEventListener('DOMContentLoaded', function() {
-            // 可以添加更多的交互性和动态内容
+            // GitHub Pages上的仓库URL
+            var repoUrl = 'https://vcnovels.github.io/text';
+
+            // 要加载的小说内容文件（假设为novel.md）
+            var novelFile = 'novel.md';
+
+            // AJAX请求获取小说内容
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', repoUrl + novelFile, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var novelMarkdown = xhr.responseText;
+                    // 解析Markdown并渲染到页面上
+                    var converter = new showdown.Converter();
+                    var html = converter.makeHtml(novelMarkdown);
+                    document.getElementById('novel-content').innerHTML = html;
+                }
+            };
+            xhr.send();
+
             console.log('页面加载完成');
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
 </body>
 </html>
+
